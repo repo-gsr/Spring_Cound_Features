@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: admin-server
+  devtools:
+    add-properties: false
+  security:
+    user:
+      name: admin
+      password: ENC(FR1TypkufDzjpjndV89JHA==)
+  boot:
+    admin:
+      ui:
+        title: DashBoard
+        brand: Application DashBoard(Monitoring APP's)
+        login-icon: 
+        
+jasypt:
+  encryptor:
+    password: adminkey
+server:
+  port: 4007
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,88 @@
+# use this commad while running this registry -Dspring-boot.run.profiles=eureka-registry-in
+
+# these are the profiles eureka-registry-in,eureka-registry-us,eureka-registry-sg
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /
+      # By default, only 'health' and 'info' are accessible via web
+      exposure:
+        include: '*'
+# This default profile is used when running a single instance completely standalone:
+spring:
+  profiles: default
+  devtools:
+    add-properties: false
+  application:
+    name: ServiceRegistry
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+        username: admin
+        password: ENC(FR1TypkufDzjpjndV89JHA==)
+jasypt:
+  encryptor:
+    password: adminkey
+server:
+  port: 9092  
+eureka:
+  instance:
+    hostname: eureka-registry.com
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+---
+spring:
+  profiles: eureka-registry-in
+eureka:
+  server:
+    enable-self-preservation: true
+  instance:
+    hostname: eureka-registry-in.com
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl: 
+      defaultZone: http://eureka-registry-us.com:8083/eureka/
+server:
+  port: 8082
+---
+spring:
+  profiles: eureka-registry-us
+eureka:
+  server:
+    enable-self-preservation: true
+  instance:
+    hostname: eureka-registry-us.com
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-registry-sg.com:8084/eureka/
+server:
+  port: 8083
+---
+spring:
+  profiles: eureka-registry-sg
+eureka:
+  server:
+    enable-self-preservation: true
+  instance:
+    hostname: eureka-registry-sg.com
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-registry-in.com:8082/eureka/
+server:
+  port: 8084

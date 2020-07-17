@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: configServer
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+  cloud:
+    config:
+      server:
+        git:
+          uri: git config repo url
+          username: user name
+          password: password
+jasypt:
+  encryptor:
+    password: appkey
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 4012
